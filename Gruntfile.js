@@ -7,8 +7,10 @@ module.exports = function(grunt) {
         seperator: ';',
       },
       dist: {
-        // src: //[???],
-        // dest: ???,
+        src: ['public/client/**/*.js'],
+        dest: 'public/dist/<%= pkg.name %>.js',
+        src: ['public/lib/**/*.js'],
+        dest: 'public/dist/libs.js'
       }
     },
 
@@ -29,11 +31,19 @@ module.exports = function(grunt) {
 
     uglify: {
       options: {
-        // banner: //???
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
       },
-      build: {
-        // src: //???,
-        // dest: //???
+      dist: {
+        // files: {
+        //   '/public/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest.<%= pkg.name %>.js %>'],
+        //   '/public/dist/libs.min.js': ['<%= concat.dist.dest.libs.js %>'] 
+        // }
+        
+        src: 'public/dist/<%= pkg.name %>.js',
+        dest: 'public/dist/<%= pkg.name %>.min.js',
+        src: 'public/dist/libs.js',
+        dest: 'public/dist/libs.min.js', 
+        
       }
     },
 
@@ -139,8 +149,7 @@ module.exports = function(grunt) {
     'mochaTest'
   ]);
 
-  grunt.registerTask('build', [
-  ]);
+  grunt.registerTask('build', ['concat', 'uglify']);
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
