@@ -3,6 +3,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        seperator: ';',
+      },
+      dist: {
+        // src: //[???],
+        // dest: ???,
+      }
     },
 
     mochaTest: {
@@ -21,6 +28,13 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      options: {
+        // banner: //???
+      },
+      build: {
+        // src: //???,
+        // dest: //???
+      }
     },
 
     eslint: {
@@ -53,6 +67,36 @@ module.exports = function(grunt) {
       prodServer: {
       }
     },
+    gitadd: {
+      task: {
+        options: {
+          force: true
+        },
+        files: {
+          src: ['test.txt']
+        }
+      }
+    },
+    gitcommit: {
+      task: {
+        options: {
+          message: 'Testing',
+          noVerify: true,
+          noStatus: false
+        },
+        files: {
+          src: ['test.txt']
+        }
+      }
+    },
+    gitpush: {
+      task: {
+        options: {
+          remote: 'live'
+        }
+      }
+    },
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -61,8 +105,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-mocha-test');
+  // grunt-shell is a plugin which will let us push to remote branches
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-git');
 
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
@@ -108,5 +154,6 @@ module.exports = function(grunt) {
     // add your deploy tasks here
   ]);
 
+  grunt.registerTask('default', ['server-dev']);
 
 };
